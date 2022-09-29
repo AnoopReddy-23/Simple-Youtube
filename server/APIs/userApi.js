@@ -65,6 +65,98 @@ userApp.post('/create-user',upload.single("thumbnail"),expressAsyncHandler(async
 }))
 
 
-
-
+userApp.post("/upload-video",expressAsyncHandler( async (req, res) => {
+    // Get the file name and extension with multer
+    const storage = multer.diskStorage({
+      filename: (req, file, cb) => {
+        const fileExt = file.originalname.split(".").pop();
+        const filename = `${new Date().getTime()}.${fileExt}`;
+        cb(null, filename);
+      },
+    });
+  
+    // Filter the file to validate if it meets the required video extension
+    const fileFilter = (req, file, cb) => {
+      if (file.mimetype === "video/mp4") {
+        cb(null, true);
+      } else {
+        cb(
+          {
+            message: "Unsupported File Format",
+          },
+          false
+        );
+      }
+    };
+  
+    // Set the storage, file filter and file size with multer
+    const upload = multer({
+      storage,
+      limits: {
+        fieldNameSize: 200,
+        fileSize: 30 * 1024 * 1024,
+      },
+      fileFilter,
+    }).single("video");
+  
+    upload(req, res, (err) => {
+      if (err) {
+        return res.send(err);
+      }
+  
+      // SEND FILE TO CLOUDINARY
+      cloudinary.config({
+        cloud_name:process.env.CLOUD_NAME,
+        api_key: process.env.API_KEY,
+        api_secret: process.env.API_SECRET,
+        secure: true,
+      });
+      const { path } = req.file; // file becomes available in req at this point
+  
+      const fName = req.file.originalname.split(".")[0];
+      cloudinary.uploader.upload(
+        path,
+        {
+          resource_type: "video",
+          public_id: `AskMentor/${fName}`,
+          chunk_size: 6000000,
+          eager: [
+            {
+              width: 300,
+              height: 300,
+              crop: "pad",
+              audio_codec: "none",
+            },
+            {
+              width: 160,
+              height: 100,
+              crop: "crop",
+              gravity: "south",
+              audio_codec: "none",
+            },
+          ],
+        },
+  
+        // Send cloudinary response or catch error
+        async (err, video) => {
+          if (err) return res.send(err);
+  
+          //fs.unlinkSync(path);
+            //console.log(video)
+            let userCollectionObject=req.app.get("userCollectionObject");
+            //get userObj as string from client and convert into object
+            let newUserObj = JSON.parse(req.body.obj);
+            let userOfDB=await userCollectionObject.findOne({title:newUserObj.title});
+            //console.log(userOfDB)
+            await userCollectionObject.deleteOne({title:userOfDB.title})
+            delete userOfDB._id
+            userOfDB.video=video.url
+            //console.log(userOfDB)
+            await userCollectionObject.insertOne(userOfDB)
+          return res.send({message:"Successfully Uploaded!!"});
+        }
+      );
+    });
+  }));
+  
 module.exports=userApp;

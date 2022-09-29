@@ -14,7 +14,7 @@ function InputForm() {
   //state for image
   let [thumbnail,setThumbnail]=useState(null)
    //state for video
-   let [video,setVideo]=useState(null)
+  let [video,setVideo]=useState(null)
 
   //on image select
   const onImageSelect=(event)=>{
@@ -37,11 +37,25 @@ function InputForm() {
     //HTTP POST request
     axios.post('http://localhost:4000/user-api/create-user', formData)
     .then(response=>{
-      //console.log(response.data.payload)
-      alert(response.data.message)
+      //console.log(response.data)
+      //alert(response.data.message)
       //if user created
       if(response.data.message==="New user craeted successfully!"){
+          //navigate('/displaydata')
+          let obj={title:response.data.payload.title}
+          let formData=new FormData()
+          formData.append("obj", JSON.stringify(obj))
+          formData.append("video", video)
+          axios.post('http://localhost:4000/user-api/upload-video', formData)
+          .then(response=>{
+            alert(response.data.message)
+            if(response.data.message==="Successfully Uploaded!!")
               navigate('/displaydata')
+          })
+          .catch(error=>{
+            console.log(error)
+            alert("Something went wrong!! Please try again after sometime..")
+          })
       }
     })
     .catch(error=>{
@@ -79,7 +93,6 @@ function InputForm() {
               {...register("thumbnail",{required:true})} 
               onChange={(event)=>onImageSelect(event)}
             />
-            {/* validation error message for Thumbnail */}
             {errors.thumbnail && <p className='text-danger'>*Thumbnail is required</p>}
           </Form.Group>
 
