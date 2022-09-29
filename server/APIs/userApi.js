@@ -159,4 +159,15 @@ userApp.post("/upload-video",expressAsyncHandler( async (req, res) => {
     });
   }));
   
+//create route to handle '/getusers' path   //middleware2 --> to execute for a specific request
+userApp.get('/getdata',expressAsyncHandler(async (request,response)=>{
+    
+  //get userCollectionObject from app.js
+  let userCollectionObject=request.app.get("userCollectionObject");
+  //read all users
+  let data=await userCollectionObject.find().toArray()  //converts the cursors to array
+  //sending response
+  response.send({message:'All data',payload:data})
+}))
+
 module.exports=userApp;
