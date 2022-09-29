@@ -14,7 +14,7 @@ Web Page 3 -Displaying video
 Playing the video automatically. Fetch the video from Cloudinary
 
 Tools and Technologies used for development
-ReactJS
-NodeJS
-MongoDB
-API from cloudinary.com
+  ReactJS
+  NodeJS
+  MongoDB
+  API from cloudinary.com
