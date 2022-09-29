@@ -66,6 +66,10 @@ function InputForm() {
 
   return (
     <>
+      <div className="m-4 p-3 me-auto" >
+        {/* Navigate to data */}
+        <Button variant="success" onClick={()=>navigate('/displaydata')}>Go to Dashboard</Button>
+      </div>
       <div className="mt-5 col-10 col-sm-8 col-md-7 mx-auto border border-2">
         {/* form */}
         <Form onSubmit={handleSubmit(onFormSubmit)} className='p-5'>

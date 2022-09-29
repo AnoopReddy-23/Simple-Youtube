@@ -1,5 +1,5 @@
 import React from 'react'
-import {Modal,Button} from 'react-bootstrap'
+import {Modal,Button,Ratio} from 'react-bootstrap'
 
 function Models(props) {
   return (
@@ -17,11 +17,11 @@ function Models(props) {
             </Modal.Header>
             <Modal.Body >
                 <div className="row">
-                    <div >
-                        <video autoPlay loop controls className="col-10 d-block mx-auto">
+                    <Ratio aspectRatio="16x9">
+                        <video autoPlay loop controls className="col-10 d-block mx-auto" aspectRatio="16x9">
                             <source src={props.item.video} type='video/mp4' />
-                        </video>  
-                    </div>
+                        </video> 
+                    </Ratio>
                 </div>
             </Modal.Body>
             <Modal.Footer>

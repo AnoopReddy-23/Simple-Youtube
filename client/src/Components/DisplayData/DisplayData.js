@@ -1,8 +1,12 @@
 import {useState,useEffect} from 'react'
 import axios from 'axios'
 import Card from '../Card/Cards'
+import {Button} from 'react-bootstrap'
+import {useNavigate} from 'react-router-dom'
 
 function DisplayData() {
+
+  const navigate=useNavigate()
 
   let [data,setData]=useState([])
 
@@ -24,6 +28,11 @@ function DisplayData() {
               <Card key={item._id} item={item} />
             </div>
         )}
+      </div>
+
+      <div className="m-4 p-4">Want to upload a Video ?  
+        {/* Navigate to data */}
+        <Button variant="success" onClick={()=>navigate('/add')}>Click Here</Button>
       </div>
     </div>
   )
