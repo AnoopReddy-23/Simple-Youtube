@@ -101,7 +101,7 @@ userApp.post("/upload-video",expressAsyncHandler( async (req, res) => {
   
     upload(req, res, (err) => {
       if (err) {
-        return res.send(err);
+        res.send(err);
       }
   
       // SEND FILE TO CLOUDINARY
@@ -139,7 +139,7 @@ userApp.post("/upload-video",expressAsyncHandler( async (req, res) => {
   
         // Send cloudinary response or catch error
         async (err, video) => {
-          if (err) return res.send(err);
+          if (err)  res.send(err);
   
           //fs.unlinkSync(path);
             //console.log(video)
@@ -153,15 +153,14 @@ userApp.post("/upload-video",expressAsyncHandler( async (req, res) => {
             userOfDB.video=video.url
             //console.log(userOfDB)
             await userCollectionObject.insertOne(userOfDB)
-          return res.send({message:"Successfully Uploaded!!"});
+          res.send({message:"Successfully Uploaded!!"});
         }
       );
     });
   }));
   
 //create route to handle '/getusers' path   //middleware2 --> to execute for a specific request
-userApp.get('/getdata',expressAsyncHandler(async (request,response)=>{
-    
+userApp.get('/getdata',expressAsyncHandler(async (request,response)=>{    
   //get userCollectionObject from app.js
   let userCollectionObject=request.app.get("userCollectionObject");
   //read all users

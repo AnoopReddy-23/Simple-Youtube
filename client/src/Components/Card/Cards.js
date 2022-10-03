@@ -4,7 +4,6 @@ import './Card.css'
 import Models from '../Model/Models'
 
 function Cards({item}) {
-
   const [modalShow, setModalShow] = useState(false);
 
   return (
@@ -12,7 +11,7 @@ function Cards({item}) {
         <Card style={{ width: "20rem" }} className='mx-auto mt-3 card text-center'>
             <Card.Body className='card-body'>
                 <Card.Img variant="top" src={item.image} onClick={()=>setModalShow(true)} className='card-img'/>
-                <Card.Title className='mt-3 card-title h1'>{item.title}</Card.Title>
+                <Card.Title className='mt-3 card-title h1' onClick={()=>setModalShow(true)}>{item.title}</Card.Title>
                 <Card.Text className='mt-2'>{item.description}</Card.Text>
             </Card.Body>
         </Card>

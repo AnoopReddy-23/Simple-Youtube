@@ -1,6 +1,6 @@
 import React,{useState} from 'react'
 import {useForm} from 'react-hook-form'
-import {Form, Button,Card} from 'react-bootstrap'
+import {Form, Button} from 'react-bootstrap'
 import {GoSignIn} from 'react-icons/go'
 import axios from 'axios'
 import {useNavigate} from 'react-router-dom'
@@ -50,7 +50,7 @@ function InputForm() {
           .then(response=>{
             alert(response.data.message)
             if(response.data.message==="Successfully Uploaded!!")
-              navigate('/displaydata')
+              navigate('/')
           })
           .catch(error=>{
             console.log(error)
@@ -66,12 +66,13 @@ function InputForm() {
 
   return (
     <>
-      <div className="m-4 p-3 me-auto" >
+      <div className="m-4 p-4">Want to see VIDEO's ?  
         {/* Navigate to data */}
-        <Button variant="success" onClick={()=>navigate('/displaydata')}>Go to Dashboard</Button>
+        <Button variant="success" onClick={()=>navigate('/display')}>Click Here</Button>
       </div>
       <div className="mt-5 col-10 col-sm-8 col-md-7 mx-auto border border-2">
         {/* form */}
+        <h1 className="text-center text-warning">Upload video!!</h1>
         <Form onSubmit={handleSubmit(onFormSubmit)} className='p-5'>
           {/* Title */}
           <Form.Group className="mb-3">
